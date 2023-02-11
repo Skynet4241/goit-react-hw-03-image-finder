@@ -47,6 +47,7 @@ export class App extends Component {
 
   onLoadMoreClick = async () => {
     try {
+      this.setState({ loading: true });
       const { images, currentSearch, pageNumber } = this.state;
       const { hits, totalHits } = await getImageList(
         currentSearch,
@@ -61,6 +62,8 @@ export class App extends Component {
       });
     } catch (error) {
       this.setState({ errorMessage: error.message });
+    } finally {
+      this.setState({ loading: false });
     }
   };
 
@@ -69,10 +72,9 @@ export class App extends Component {
       <>
         <SearchBar onFormSubmit={this.onFormSubmit} />
         <ImageGallery images={this.state.images} />
-
         {this.state.loading && (
           <Dna
-            visible={true}
+            visible={this.state.loading}
             height="80"
             width="80"
             ariaLabel="dna-loading"
@@ -83,6 +85,7 @@ export class App extends Component {
             wrapperClass="dna-wrapper"
           />
         )}
+
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           {this.state.loadButton && <Button onClick={this.onLoadMoreClick} />}
           <ToastContainer />
