@@ -9,6 +9,7 @@ import { settings } from './ToastSettings/ToastSettings';
 export class App extends Component {
   state = {
     images: [],
+    loadButton: null,
     currentSearch: '',
     pageNumber: 1,
   };
@@ -17,16 +18,19 @@ export class App extends Component {
     e.preventDefault();
     try {
       const searchQuery = e.target.elements.input.value.trim();
+
       if (!searchQuery.trim()) {
         toast.error('Please enter a non empty query!', settings);
         return;
       }
-      const response = await getImageList(searchQuery, 1);
+      const { hits, totalHits } = await getImageList(searchQuery, 1);
+
       this.setState({
-        images: response,
+        images: [...hits],
         currentSearch: searchQuery.toLowerCase(),
         pageNumber: 1,
         errorMessage: '',
+        loadButton: this.state.pageNumber < Math.ceil(totalHits / 12),
       });
     } catch (error) {
       this.setState({ errorMessage: error.message });
@@ -37,9 +41,9 @@ export class App extends Component {
     try {
       const { currentSearch, pageNumber } = this.state;
       const response = await getImageList(currentSearch, pageNumber + 1);
-
+      console.log(response);
       this.setState({
-        images: [...this.state.images, ...response],
+        images: [...this.state.images, ...response.hits],
         pageNumber: this.state.pageNumber + 1,
         errorMessage: '',
       });
@@ -53,8 +57,10 @@ export class App extends Component {
       <>
         <SearchBar onFormSubmit={this.onFormSubmit} />
         <ImageGallery images={this.state.images} />
-        <Button onClick={this.onLoadMoreClick} />
-        <ToastContainer />
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          {this.state.loadButton && <Button onClick={this.onLoadMoreClick} />}
+          <ToastContainer />
+        </div>
       </>
     );
   }
