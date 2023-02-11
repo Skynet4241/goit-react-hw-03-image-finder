@@ -3,6 +3,7 @@ import { ImageGallery } from './ImageGallery';
 import { SearchBar } from './Searchbar';
 import { Button } from './Button';
 import { getImageList } from './API/API';
+import { Modal } from './Modal/Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { settings } from './ToastSettings/ToastSettings';
@@ -16,6 +17,8 @@ export class App extends Component {
     pageNumber: 1,
     loading: false,
     errorMessage: '',
+    showModal: false,
+    modalIMG: '',
   };
 
   onFormSubmit = async e => {
@@ -39,6 +42,7 @@ export class App extends Component {
     if (prevQuery !== currentSearch || prevPage !== pageNumber) {
       try {
         this.setState({ loading: true });
+
         const { hits, totalHits } = await getImageList(
           currentSearch,
           pageNumber
@@ -62,11 +66,22 @@ export class App extends Component {
     });
   };
 
+  onImageClick = url => {
+    this.setState({ showModal: !this.state.showModal, modalIMG: url });
+  };
+
+  onCloseModal = () => {
+    this.setState({ showModal: false });
+  };
+
   render() {
     return (
       <>
         <SearchBar onFormSubmit={this.onFormSubmit} />
-        <ImageGallery images={this.state.images} />
+        <ImageGallery
+          images={this.state.images}
+          clickHandler={this.onImageClick}
+        />
 
         {this.state.loading && <Loader loading={this.state.loading} />}
 
@@ -74,6 +89,13 @@ export class App extends Component {
           {this.state.loadButton && <Button onClick={this.onLoadMoreClick} />}
           <ToastContainer />
         </Wrap>
+        {this.state.showModal && (
+          <Modal
+            image={this.state.modalIMG}
+            alt={this.state.currentSearch}
+            onClose={this.onCloseModal}
+          />
+        )}
       </>
     );
   }
