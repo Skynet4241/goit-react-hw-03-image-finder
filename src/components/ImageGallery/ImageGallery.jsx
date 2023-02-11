@@ -1,7 +1,13 @@
-export const ImageGallery = () => {
+import { ImageGalleryItem } from 'components/ImageGalleryItem';
+import { ImageGalleryList } from './ImageGallery.styled';
+export const ImageGallery = ({ images }) => {
   return (
     <>
-      <ul class="ImageGallery"></ul>
+      <ImageGalleryList>
+        {images.map((item, index) => (
+          <ImageGalleryItem image={item} key={index} />
+        ))}
+      </ImageGalleryList>
     </>
   );
 };
