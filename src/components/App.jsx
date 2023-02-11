@@ -3,12 +3,12 @@ import { ImageGallery } from './ImageGallery';
 import { SearchBar } from './Searchbar';
 import { Button } from './Button';
 import { getImageList } from './API/API';
-import { Modal } from './Modal/Modal';
+import { Modal } from './Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { settings } from './ToastSettings/ToastSettings';
+import { settings } from './ToastSettings';
 import { Loader } from './Loader/Loader';
-import { Wrap } from './Button/Button.styled';
+import { Wrap } from './Button';
 export class App extends Component {
   state = {
     images: [],

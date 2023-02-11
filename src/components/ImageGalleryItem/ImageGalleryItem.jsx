@@ -1,4 +1,5 @@
 import { GalleryItem, GalleryImage } from './ImageGalleryItem.styled';
+import PropTypes from 'prop-types';
 
 export const ImageGalleryItem = ({ image, toggle }) => {
   return (
@@ -12,4 +13,13 @@ export const ImageGalleryItem = ({ image, toggle }) => {
       </GalleryItem>
     </>
   );
+};
+
+ImageGalleryItem.propTypes = {
+  image: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    webformatURL: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+  }).isRequired,
+  toggle: PropTypes.func.isRequired,
 };
