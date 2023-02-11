@@ -9,7 +9,6 @@ export const getImageList = async (query, page) => {
     `/?q=${query}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`
   );
 
-  console.log(response.data);
   return response.data.hits.map(item => {
     return {
       id: item.id,
