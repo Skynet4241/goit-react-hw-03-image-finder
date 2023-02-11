@@ -6,7 +6,8 @@ import { getImageList } from './API/API';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { settings } from './ToastSettings/ToastSettings';
-import { Dna } from 'react-loader-spinner';
+import { Loader } from './Loader/Loader';
+import { Wrap } from './Button/Button.styled';
 export class App extends Component {
   state = {
     images: [],
@@ -72,24 +73,13 @@ export class App extends Component {
       <>
         <SearchBar onFormSubmit={this.onFormSubmit} />
         <ImageGallery images={this.state.images} />
-        {this.state.loading && (
-          <Dna
-            visible={this.state.loading}
-            height="80"
-            width="80"
-            ariaLabel="dna-loading"
-            wrapperStyle={{
-              display: 'flex',
-              margin: '0 auto',
-            }}
-            wrapperClass="dna-wrapper"
-          />
-        )}
 
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        {this.state.loading && <Loader loading={this.state.loading} />}
+
+        <Wrap>
           {this.state.loadButton && <Button onClick={this.onLoadMoreClick} />}
           <ToastContainer />
-        </div>
+        </Wrap>
       </>
     );
   }

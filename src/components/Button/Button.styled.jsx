@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 
+export const Wrap = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 export const ButtonMore = styled.button`
   margin: 0 0 20px;
   padding: 8px 16px;
