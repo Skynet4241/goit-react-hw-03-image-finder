@@ -17,17 +17,17 @@ export class App extends Component {
   onFormSubmit = async e => {
     e.preventDefault();
     try {
-      const searchQuery = e.target.elements.input.value.trim();
+      const searchQuery = e.target.elements.input.value.trim().toLowerCase();
 
       if (!searchQuery.trim()) {
-        toast.error('Please enter a non empty query!', settings);
+        toast.error('Please enter a non-empty query!', settings);
         return;
       }
       const { hits, totalHits } = await getImageList(searchQuery, 1);
 
       this.setState({
         images: [...hits],
-        currentSearch: searchQuery.toLowerCase(),
+        currentSearch: searchQuery,
         pageNumber: 1,
         errorMessage: '',
         loadButton: this.state.pageNumber < Math.ceil(totalHits / 12),
