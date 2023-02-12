@@ -47,6 +47,11 @@ export class App extends Component {
           currentSearch,
           pageNumber
         );
+
+        if (hits.length === 0) {
+          toast.error('We did not find an image for your query!', settings);
+        }
+
         this.setState({
           loadButton: pageNumber < Math.ceil(totalHits / 12),
           images: [...images, ...hits],
